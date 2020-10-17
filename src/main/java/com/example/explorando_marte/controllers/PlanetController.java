@@ -36,7 +36,7 @@ public class PlanetController {
         }
     }
     @GetMapping("/{id}")
-    public ResponseEntity readOnePlanet(@PathVariable Integer id){
+    public ResponseEntity readOnePlanet(@PathVariable int id){
         Optional<Planet> queryMap = this.repository.findById(id);
 
         if (queryMap.isPresent()){
@@ -49,7 +49,7 @@ public class PlanetController {
     @PutMapping("{id}")
     @Transactional
     public ResponseEntity updatePlanet(@RequestBody Planet planet,
-                                         @PathVariable Integer id) {
+                                         @PathVariable int id) {
         if (this.repository.existsById(id)) {
             planet.setId(id);
             this.repository.save(planet);
@@ -61,7 +61,7 @@ public class PlanetController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deletePlanet(@PathVariable Integer id){
+    public ResponseEntity deletePlanet(@PathVariable int id){
         if(this.repository.existsById(id)){
             this.repository.deleteById(id);
             return ok().build();

@@ -1,9 +1,12 @@
 package com.example.explorando_marte.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
-public class Probe extends Control {
+public class Probe implements Control {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idProbe")
@@ -17,25 +20,46 @@ public class Probe extends Control {
     @ManyToOne
     @JoinColumn(name = "idPlanet")
     private Planet planet;
+    @Transient
+    private ArrayList<String> cardinalPoints = new ArrayList<String>(Arrays.asList("N", "E", "S", "W"));
 
     public Probe(){}
 
     public Probe(int positionX, int positionY, String probeDirection) {
-        super(probeDirection);
         this.positionX = positionX;
         this.positionY = positionY;
         this.probeDirection = probeDirection;
     }
 
-    public void move(){
-        if(cardinalPoints[0].equals("N")){
-            positionY++;
-        }else if(cardinalPoints[0].equals("S")){
-            positionY--;
-        }else if(cardinalPoints[0].equals("E")){
-            positionX++;
+    public void turnRight(){
+        int actualPosition =  cardinalPoints.indexOf(probeDirection);
+        if(actualPosition==3){
+            probeDirection = cardinalPoints.get(0);
         }else{
-            positionX--;
+            probeDirection = cardinalPoints.get(actualPosition+1);
+        }
+    }
+
+    public void turnLeft(){
+        int actualPosition =  cardinalPoints.indexOf(probeDirection);
+        if(actualPosition==0){
+            probeDirection = cardinalPoints.get(3);
+        }else{
+            probeDirection = cardinalPoints.get(actualPosition-1);
+        }
+    }
+
+    public void move(){
+        if(this.probeDirection.equals("N") && this.positionY < this.planet.getY()){
+            this.positionY++;
+        }else if(this.probeDirection.equals("S") && this.positionY > 0){
+            this.positionY--;
+        }else if(this.probeDirection.equals("E") && this.positionX < this.planet.getX()){
+            this.positionX++;
+        }else if(this.probeDirection.equals("W") && this.positionX > 0){
+            this.positionX--;
+        }else{
+            System.out.println("Movimento anulado");
         }
     }
 

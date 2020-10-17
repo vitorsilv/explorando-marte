@@ -34,8 +34,8 @@ public class ProbeController {
             List<Probe> probes = this.repository.findAll();
             //Verificando se a nova sonda vai pousar em cima de outra
             for (Probe p: probes) {
-                if(p.getPositionX() == newProbe.getPositionX()
-                        || p.getPositionY() == newProbe.getPositionY()){
+                if((p.getPositionX() == newProbe.getPositionX())
+                        && (p.getPositionY() == newProbe.getPositionY())){
                     return badRequest().body(String.format("Erro em calular a rota!\nA nova sonda está iria bater na sonda de id %d\nEnvie uma rota de pouso livre :D",p.getId()));
                 }
             }
@@ -54,7 +54,7 @@ public class ProbeController {
         }
     }
     @GetMapping("/{id}")
-    public ResponseEntity readOneProbe(@PathVariable Integer id){
+    public ResponseEntity readOneProbe(@PathVariable int id){
         Optional<Probe> queryProbe = this.repository.findById(id);
 
         if (queryProbe.isPresent()){
@@ -67,7 +67,7 @@ public class ProbeController {
     @PutMapping("{id}")
     @Transactional
     public ResponseEntity updateProbe(@RequestBody Probe probe,
-                                       @PathVariable Integer id) {
+                                       @PathVariable int id) {
         if (this.repository.existsById(id)) {
             probe.setId(id);
             this.repository.save(probe);
@@ -79,7 +79,7 @@ public class ProbeController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deleteProbe(@PathVariable Integer id){
+    public ResponseEntity deleteProbe(@PathVariable int id){
         if(this.repository.existsById(id)){
             this.repository.deleteById(id);
             return ok().build();
