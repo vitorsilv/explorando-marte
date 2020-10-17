@@ -3,6 +3,7 @@ package com.example.explorando_marte.controllers;
 import com.example.explorando_marte.repositories.PlanetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import  com.example.explorando_marte.models.*;
 
@@ -19,6 +20,7 @@ public class PlanetController {
     private PlanetRepository repository;
 
     @PostMapping()
+    @Transactional
     public ResponseEntity createMap(@RequestBody Planet newPlanet){
         this.repository.save(newPlanet);
         return created(null).build();
@@ -45,6 +47,7 @@ public class PlanetController {
     }
 
     @PutMapping("{id}")
+    @Transactional
     public ResponseEntity updatePlanet(@RequestBody Planet planet,
                                          @PathVariable Integer id) {
         if (this.repository.existsById(id)) {
@@ -57,12 +60,13 @@ public class PlanetController {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity deletePlanet(@PathVariable Integer id){
         if(this.repository.existsById(id)){
             this.repository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ok().build();
         } else {
-            return ResponseEntity.notFound().build();
+            return notFound().build();
         }
     }
 

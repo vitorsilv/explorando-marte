@@ -1,35 +1,33 @@
 package com.example.explorando_marte.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 @Entity
 public class Planet {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idPlanet")
-    private Integer id;
+    private int id;
     @Column(name = "planetName",length = 30, nullable = false, unique = true)
     private String planetName;
     @Column(length = 2, nullable = false)
-    private Integer x;
+    private int x;
     @Column(length = 2, nullable = false)
-    private Integer y;
+    private int y;
 
     public Planet(){}
 
-    public Planet(String planetName, Integer limitX, Integer limitY) {
+    public Planet(String planetName, int limitX, int limitY) {
         this.planetName = planetName;
         this.x = limitX;
         this.y = limitY;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -41,19 +39,19 @@ public class Planet {
         this.planetName = planetName;
     }
 
-    public Integer getX() {
+    public int getX() {
         return x;
     }
 
-    public void setX(Integer x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public Integer getY() {
+    public int getY() {
         return y;
     }
 
-    public void setY(Integer y) {
+    public void setY(int y) {
         this.y = y;
     }
 

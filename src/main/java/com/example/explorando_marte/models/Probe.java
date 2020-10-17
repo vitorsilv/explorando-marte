@@ -5,9 +5,9 @@ import javax.persistence.*;
 @Entity
 public class Probe extends Control {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idProbe")
-    private Integer id;
+    private int id;
     @Column(name = "positionX", length = 2)
     private int positionX;
     @Column(name = "positionY", length = 2)
@@ -40,11 +40,11 @@ public class Probe extends Control {
     }
 
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
