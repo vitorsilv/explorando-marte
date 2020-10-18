@@ -24,36 +24,39 @@ public class MovementController {
     private ProbeRepository repository;
 
     @ApiOperation(value = "Controla uma sonda em um planeta")
-    @PutMapping(value = "/{idProbe}/{command}", produces="application/json")
+    @PutMapping(value = "/{idProbe}/{commands}", produces="application/json")
     @Transactional
     public ResponseEntity moveProbe(@PathVariable("idProbe") int idProbe,
-                                    @PathVariable("command") String command){
+                                    @PathVariable("commands") String commands){
         Optional<Probe> probe = repository.findById(idProbe);
         List<Probe> probesList = repository.findAll();
         if(repository.existsById(idProbe)) {
-            switch (command) {
-                case "L":
-                    probe.get().turnLeft();
-                    this.repository.save(probe.get());
-                    return ok().body(probe.get());
-                case "R":
-                    probe.get().turnRight();
-                    this.repository.save(probe.get());
-                    return ok().body(probe.get());
-                case "M":
-                    probe.get().move();
-                    for (Probe p: probesList) {
+            for (char command : commands.toCharArray()) {
+                switch (command) {
+                    case 'L':
+                        probe.get().turnLeft();
+                        this.repository.save(probe.get());
+                        break;
+                    case 'R':
+                        probe.get().turnRight();
+                        this.repository.save(probe.get());
+                        break;
+                    case 'M':
+                        probe.get().move();
+                        for (Probe p : probesList) {
 
-                        if(((probe.get().getPositionY() == p.getPositionY())
-                                && (probe.get().getPositionX() == p.getPositionX())) && !p.equals(probe.get())){
-                            throw new RuntimeException("Você iria bater na sonda de id "+ p.getId());
+                            if (((probe.get().getPositionY() == p.getPositionY())
+                                    && (probe.get().getPositionX() == p.getPositionX())) && !p.equals(probe.get())) {
+                                throw new RuntimeException("Você iria bater na sonda de id " + p.getId());
+                            }
                         }
-                    }
-                    this.repository.save(probe.get());
-                    return ok().body(probe.get());
-                default:
-                    return badRequest().body("Movimento inválido, só é permitido L, R e M!");
+                        this.repository.save(probe.get());
+                        break;
+                    default:
+                        throw new RuntimeException("Movimento inválido, só é permitido L, R e M!");
+                }
             }
+            return ok().body(probe.get());
         }else {
             return notFound().build();
         }

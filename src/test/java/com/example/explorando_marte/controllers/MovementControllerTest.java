@@ -25,7 +25,7 @@ class MovementControllerTest {
         assertTrue(moveProbe.isAnnotationPresent(PutMapping.class),
                 "Método moveProbe() deve estar anotado com @PutMapping");
 
-        String expectedUri = "/{idProbe}/{command}";
+        String expectedUri = "/{idProbe}/{commands}";
         assertEquals(expectedUri, moveProbe.getDeclaredAnnotation(PutMapping.class).value()[0],
                 "A URI de moveProbe() deve ser "+expectedUri);
     }
