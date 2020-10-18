@@ -50,7 +50,7 @@ class PlanetControllerTest {
         assertTrue(deletePlanet.isAnnotationPresent(DeleteMapping.class),
                 "Método deletePlanet() deve estar anotado com @DeleteMapping");
 
-        expectedUri = "/{id}";
+        expectedUri = "{id}";
         assertEquals(expectedUri, deletePlanet.getDeclaredAnnotation(DeleteMapping.class).value()[0],
                 "A URI de deletePlanet() deve ser "+expectedUri);
 
@@ -59,7 +59,7 @@ class PlanetControllerTest {
         assertTrue(updatePlanet.isAnnotationPresent(PutMapping.class),
                 "Método updatePlanet() deve estar anotado com @PutMapping");
 
-        expectedUri = "/{id}";
+        expectedUri = "{id}";
         assertEquals(expectedUri, updatePlanet.getDeclaredAnnotation(PutMapping.class).value()[0],
                 "A URI de updatePlanet() deve ser "+expectedUri);
 
