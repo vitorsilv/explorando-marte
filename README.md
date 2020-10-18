@@ -6,7 +6,7 @@
 ### Explorando marte ! :smiley:
 Projeto desenvolvido por [@vitorsilv](https://github.com/vitorsilv).
 A ideia é muito simples são REST APIs que podem criar planetas e sondas e também explorar esses planetas com as sondas.
-Caso queira ver a documentação das APIs estão disponíveis em **url**
+Caso queira ver a documentação e testar as APIs pode faze-lo via [Swagger](https://expo-mars-vitorsilv.herokuapp.com/swagger-ui.html)
 
 ##
 
