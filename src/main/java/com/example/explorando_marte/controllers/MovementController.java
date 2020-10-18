@@ -1,9 +1,8 @@
 package com.example.explorando_marte.controllers;
 
-import com.example.explorando_marte.models.Planet;
 import com.example.explorando_marte.models.Probe;
-import com.example.explorando_marte.repositories.PlanetRepository;
 import com.example.explorando_marte.repositories.ProbeRepository;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,16 +16,15 @@ import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.*;
 
+@ApiOperation(value = "Rota para movimentar uma sonda em um planeta")
 @RestController
 @RequestMapping("/movement")
 public class MovementController {
     @Autowired
     private ProbeRepository repository;
 
-    @Autowired
-    private PlanetRepository planetRepository;
-
-    @PutMapping("/{idProbe}/{command}")
+    @ApiOperation(value = "Controla uma sonda em um planeta")
+    @PutMapping(value = "/{idProbe}/{command}", produces="application/json")
     @Transactional
     public ResponseEntity moveProbe(@PathVariable("idProbe") int idProbe,
                                     @PathVariable("command") String command){

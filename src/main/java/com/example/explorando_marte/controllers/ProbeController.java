@@ -4,6 +4,8 @@ import com.example.explorando_marte.models.Planet;
 import com.example.explorando_marte.models.Probe;
 import com.example.explorando_marte.repositories.PlanetRepository;
 import com.example.explorando_marte.repositories.ProbeRepository;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.*;
+@ApiOperation(value = "Rotas para criar, listar e deletar sondas")
 @RestController
 @RequestMapping("/probe")
 public class ProbeController {
@@ -22,7 +25,10 @@ public class ProbeController {
     @Autowired
     private PlanetRepository planetRepository;
 
-    @PostMapping()
+
+
+    @ApiOperation(value = "Cria uma nova sonda")
+    @PostMapping(produces="application/json", consumes="application/json")
     @Transactional
     public ResponseEntity createProbe(@RequestBody Probe newProbe){
         Optional<Planet> planet = this.planetRepository.findById(newProbe.getPlanet().getId());
@@ -44,7 +50,8 @@ public class ProbeController {
         }
     }
 
-    @GetMapping()
+    @ApiOperation(value = "Lista todas as sondas cadastradas")
+    @GetMapping(produces="application/json")
     public ResponseEntity readAllProbes(){
         List<Probe> probes = this.repository.findAll();
         if(probes.size() > 0){
@@ -53,7 +60,9 @@ public class ProbeController {
             return noContent().build();
         }
     }
-    @GetMapping("/{id}")
+
+    @ApiOperation(value = "Consulta uma sonda beseada no id")
+    @GetMapping(value = "/{id}", produces="application/json")
     public ResponseEntity readOneProbe(@PathVariable int id){
         Optional<Probe> queryProbe = this.repository.findById(id);
 
@@ -64,20 +73,8 @@ public class ProbeController {
         }
     }
 
-    @PutMapping("{id}")
-    @Transactional
-    public ResponseEntity updateProbe(@RequestBody Probe probe,
-                                       @PathVariable int id) {
-        if (this.repository.existsById(id)) {
-            probe.setId(id);
-            this.repository.save(probe);
-            return ok().build();
-        } else {
-            return notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Deleta uma sonda baseada no id")
+    @DeleteMapping(value = "/{id}", produces="application/json")
     @Transactional
     public ResponseEntity deleteProbe(@PathVariable int id){
         if(this.repository.existsById(id)){

@@ -1,35 +1,39 @@
 package com.example.explorando_marte.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.util.*;
 
 @Entity
 public class Probe implements Control {
+
+    @ApiModelProperty(value = "Código de identificação da sonda")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idProbe")
     private int id;
+
+    @ApiModelProperty(value = "Posição X da sonda")
     @Column(name = "positionX", length = 2)
     private int positionX;
+
+    @ApiModelProperty(value = "Posição Y da sonda")
     @Column(name = "positionY", length = 2)
     private int positionY;
+
+    @ApiModelProperty(value = "Direção em que a sonda está virada")
     @Column(name = "probeDirection", length = 1)
     private String probeDirection;
+
+    @ApiModelProperty(value = "Planeta o qual a sonda pertence")
     @ManyToOne
     @JoinColumn(name = "idPlanet")
     private Planet planet;
+
     @Transient
     private ArrayList<String> cardinalPoints = new ArrayList<String>(Arrays.asList("N", "E", "S", "W"));
-
-    public Probe(){}
-
-    public Probe(int positionX, int positionY, String probeDirection) {
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.probeDirection = probeDirection;
-    }
 
     public void turnRight(){
         int actualPosition =  cardinalPoints.indexOf(probeDirection);

@@ -1,6 +1,7 @@
 package com.example.explorando_marte.controllers;
 
 import com.example.explorando_marte.repositories.PlanetRepository;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.*;
 
+@ApiOperation(value = "Rotas para criar, listar, alterar e deletar planetas")
 @RestController
 @RequestMapping("/map")
 public class PlanetController {
@@ -19,14 +21,16 @@ public class PlanetController {
     @Autowired
     private PlanetRepository repository;
 
-    @PostMapping()
+    @ApiOperation(value = "Cria um planeta")
+    @PostMapping(produces="application/json", consumes="application/json")
     @Transactional
     public ResponseEntity createMap(@RequestBody Planet newPlanet){
         this.repository.save(newPlanet);
         return created(null).build();
     }
 
-    @GetMapping()
+    @ApiOperation(value = "Lista todos os planetas criados")
+    @GetMapping(produces="application/json")
     public ResponseEntity readAllPlanets(){
         List<Planet> planets = this.repository.findAll();
         if(planets.size() > 0){
@@ -35,7 +39,9 @@ public class PlanetController {
             return noContent().build();
         }
     }
-    @GetMapping("/{id}")
+
+    @ApiOperation(value = "Consulta um planeta baseado no seu id")
+    @GetMapping(value = "{id}", produces="application/json")
     public ResponseEntity readOnePlanet(@PathVariable int id){
         Optional<Planet> queryMap = this.repository.findById(id);
 
@@ -46,7 +52,8 @@ public class PlanetController {
         }
     }
 
-    @PutMapping("{id}")
+    @ApiOperation(value = "Altera um planeta baseado no seu id")
+    @PutMapping(value = "{id}", produces="application/json", consumes="application/json")
     @Transactional
     public ResponseEntity updatePlanet(@RequestBody Planet planet,
                                          @PathVariable int id) {
@@ -59,7 +66,8 @@ public class PlanetController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Deleta um planeta baseado no seu id")
+    @DeleteMapping(value = "{id}", produces="application/json")
     @Transactional
     public ResponseEntity deletePlanet(@PathVariable int id){
         if(this.repository.existsById(id)){
